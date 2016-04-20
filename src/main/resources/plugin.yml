@@ -1,0 +1,12 @@
+name: HardcoreMC
+main: xyz.mcallister.seth.HG.Main
+version: 0.0.1-SNAPSHOT
+commands:
+  alive:
+  kits:
+  forcestart:
+  forcelobby:
+  forceend:
+  forcestop:
+  forcestartfeast:
+  feast:
