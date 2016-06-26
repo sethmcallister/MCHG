@@ -14,16 +14,13 @@ public class Lobby implements CommandExecutor
 {
     public boolean onCommand(CommandSender sender, Command command, String s, String[] strings)
     {
-        if(command.getName().equalsIgnoreCase("forcelobby"))
+        if(!sender.hasPermission("hg.admin"))
         {
-            if(!sender.hasPermission("hg.admin"))
-            {
-                sender.sendMessage(ChatColor.RED + "You do not have permission to execute that command.");
-                return true;
-            }
-            Bukkit.broadcastMessage(ChatColor.RED + "The server has been changed to Lobby state.");
-            GameState.lobby.set(true);
+            sender.sendMessage(ChatColor.RED + "You do not have permission to execute that command.");
+            return true;
         }
+        Bukkit.broadcastMessage(ChatColor.RED + "The server has been changed to Lobby state.");
+        GameState.lobby.set(true);
         return false;
     }
 }

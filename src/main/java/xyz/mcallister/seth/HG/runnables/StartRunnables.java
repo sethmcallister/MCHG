@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import xyz.mcallister.seth.HG.AtomicStorage;
 import xyz.mcallister.seth.HG.GameState;
 import xyz.mcallister.seth.HG.Main;
@@ -16,7 +15,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public class StartRunnables
 {
-    private static AtomicInteger count = new AtomicInteger(0);
+    private static AtomicInteger count = new AtomicInteger(30);
 
     private static void increment()
     {
@@ -37,10 +36,11 @@ public class StartRunnables
 
     private static Location spawn = new Location(Bukkit.getWorld("world"), 0.5, 100, 0.5);
 
-    //Checks for 20 players every 10 seconds.
+    static int starttid = 0;
+
     public static void Invincible()
     {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable()
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(), new Runnable()
         {
             public void run()
             {
@@ -49,10 +49,10 @@ public class StartRunnables
             }
         }, 120*20);
     }
-
+    //Checks for 20 players every 10 seconds.
     public static void Start()
     {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable()
+        starttid = Bukkit.getScheduler().scheduleAsyncRepeatingTask(Main.getPlugin(), new Runnable()
         {
             public void run()
             {
@@ -74,23 +74,23 @@ public class StartRunnables
 
                     Invincible();
                     GameLoop();
-
+                    Bukkit.getScheduler().cancelTask(starttid);
                     GameState.invincible.set(true);
                     GameState.lobby.set(false);
                     GameState.started.set(true);
                     GameState.ended.set(false);
-                } else
+                }
+                else
                 {
                     Bukkit.broadcastMessage(ChatColor.RED + "Not enough players to start the game.");
-                    Start();
                 }
             }
-        }, 10*20);
+        }, 0,  10*20);
     }
 
     public static void GameLoop()
     {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable()
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(Main.getPlugin(), new Runnable()
         {
             public void run()
             {
@@ -98,9 +98,10 @@ public class StartRunnables
                 if(gametime.get() != 0)
                 {
                     gametime.decrementAndGet();
-                    Bukkit.broadcastMessage(ChatColor.RED + "" + gametime.get() + " minuets remaining on the game.");
+                    Bukkit.broadcastMessage(ChatColor.YELLOW.toString() + gametime.get() + ChatColor.RED + " minuets remaining on the game.");
                     GameLoop();
-                } else
+                }
+                else
                 {
                     Bukkit.broadcastMessage(ChatColor.RED + "The game has taken too long, suspending game.");
                     Bukkit.shutdown();
@@ -117,13 +118,13 @@ public class StartRunnables
                     //todo add feast
                 }
             }
-        }, 60*20);
+        },0, 20);
     }
 
 
     public static void Won()
     {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.plugin, new Runnable()
+        Bukkit.getScheduler().scheduleAsyncDelayedTask(Main.getPlugin(), new Runnable()
         {
             public void run()
             {
@@ -132,7 +133,8 @@ public class StartRunnables
                     Bukkit.broadcastMessage(ChatColor.GOLD + AtomicStorage.winner.get("winner") + ChatColor.RED + " has won!!");
                     increment();
                     Won();
-                } else
+                }
+                else
                 {
                     Bukkit.shutdown();
                 }

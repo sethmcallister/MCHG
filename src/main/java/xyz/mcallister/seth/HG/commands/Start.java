@@ -21,7 +21,7 @@ public class Start implements CommandExecutor
                 sender.sendMessage(ChatColor.RED + "You do not have permission to execute that command.");
                 return true;
             }
-            if(GameState.started.get() == true)
+            if(GameState.started.get())
                 sender.sendMessage(ChatColor.RED + "The game has already started.");
             else
             {

@@ -9,6 +9,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import xyz.mcallister.seth.HG.AtomicStorage;
 import xyz.mcallister.seth.HG.GameState;
 import xyz.mcallister.seth.HG.runnables.StartRunnables;
+import xyz.mcallister.seth.HG.utils.KillData;
 
 /**
  * Created by sethm on 06/04/2016.
@@ -36,5 +37,6 @@ public class DeathEvent implements Listener
         event.getEntity().getPlayer().kickPlayer(ChatColor.RED + "You have died! \n Thanks for playing!");
         event.setDeathMessage(null);
         Bukkit.getWorld("world").strikeLightningEffect(event.getEntity().getPlayer().getLocation());
+        KillData.updateKills(event.getEntity().getKiller().getUniqueId());
     }
 }

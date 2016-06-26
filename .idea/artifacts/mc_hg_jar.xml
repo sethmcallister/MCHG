@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="mc-hg:jar">
+    <output-path>$PROJECT_DIR$/../../Test server/Spigot/plugins</output-path>
+    <root id="archive" name="mc-hg.jar">
+      <element id="module-output" name="mc-hg" />
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/resources/plugin.yml" />
+    </root>
+  </artifact>
+</component>
